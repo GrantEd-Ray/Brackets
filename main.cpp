@@ -4,13 +4,6 @@
 #include <windows.h>
 #include <typeinfo>
 
-enum class BracketsType
-{
-    Normal,
-    Figure,
-    Squared
-};
-
 class Text
 {
 private:
@@ -58,11 +51,19 @@ public:
                 m_brackets.push_back(is_open_bracket(m_text[i]));
             else if (is_close_bracket(m_text[i]) > 0)
             {
+                if (m_brackets.size() == 0)
+                {
+                    flag = false;
+                    break;
+                }
                 if (m_brackets[m_brackets.size()-1] == is_close_bracket(m_text[i]))
                     m_brackets.pop_back();
                 else
+                {
                     flag = false;
                     break;
+                }
+                    
             }
         }
         if (flag == false || m_brackets.size() != 0)
@@ -73,7 +74,8 @@ public:
 };
 
 int main() {
-
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
     std::cout << "Введите строку" << std::endl;
     std::string text;
     std::getline(std::cin, text);
